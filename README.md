@@ -3,6 +3,8 @@
 This README outlines the details of collaborating on this Ember application.
 A short introduction of this app could easily go here.
 
+There's a video in this PR that shows the bug: https://github.com/fabriciotav/ember-bug-01/pull/1
+
 ## Prerequisites
 
 You will need the following things properly installed on your computer.
