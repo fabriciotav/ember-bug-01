@@ -1,0 +1,121 @@
+<h1>
+  Parent Component
+</h1>
+
+<h2>Steps to reproduce the bug:</h2>
+
+<ol>
+  <li>
+    <strong>
+      Step 1 |
+    </strong>
+
+    <button type='button' {{on 'click' this.setNoteIdToProblematicNote}}>
+      Set `noteId` to the string `FID_001`
+    </button>
+  </li>
+
+  <li>
+    <strong>
+      Step 2 |
+    </strong>
+
+    <button type='button' {{on 'click' this.setNoteIdToNull}}>
+      Set `noteId` to `null`
+    </button>
+  </li>
+
+  <li>
+    <strong>
+      Step 3 |
+    </strong>
+
+    <button type='button' {{on 'click' this.setNoteIdToProblematicNote}}>
+      Set `noteId` to the string `FID_001` again
+    </button>
+  </li>
+
+  <li>
+    <strong>
+      Step 4 |
+    </strong>
+
+    Open dev tools and check
+    <i>"call to RawTransform.deserialize"</i>
+    being printed in a loop
+  </li>
+
+  <li>
+    <strong>
+      Step 5 |
+    </strong>
+
+    <button type='button' {{on 'click' this.setNoteIdToNull}}>
+      Click here to avoid crashing your browser
+    </button>
+  </li>
+</ol>
+
+<hr />
+
+Current `noteId`:
+
+<pre>
+  {{this.noteId}}
+</pre>
+
+<hr />
+
+<Parent::Child @noteId={{this.noteId}} />
+
+<hr />
+
+<h2>
+  Expected behavior:
+</h2>
+
+<p>
+  (refresh the browser first)
+</p>
+
+<ol>
+  <li>
+    <strong>
+      Step 1 |
+    </strong>
+
+    <button type='button' {{on 'click' this.setNoteIdToValidNote}}>
+      Set `noteId` to the string `FID_002`
+    </button>
+
+    (non problematic note)
+  </li>
+
+  <li>
+    <strong>
+      Step 2 |
+    </strong>
+
+    <button type='button' {{on 'click' this.setNoteIdToNull}}>
+      Set `noteId` to `null`
+    </button>
+  </li>
+
+  <li>
+    <strong>
+      Step 3 |
+    </strong>
+
+    <button type='button' {{on 'click' this.setNoteIdToValidNote}}>
+      Set `noteId` to the string `FID_002` again
+    </button>
+  </li>
+
+  <li>
+    <strong>
+      Step 4 |
+    </strong>
+
+    Profit.
+  </li>
+</ol>

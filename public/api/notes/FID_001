@@ -1,0 +1,16 @@
+{
+  "data": {
+    "type": "notes",
+    "id": "FID_001",
+    "attributes": {
+      "title": "First Note (problematic)",
+      "body": "This is the body of note #1",
+      "settings": {
+        "displaySize": "full-screen",
+        "padding": {
+          "enabled": true
+        }
+      }
+    }
+  }
+}

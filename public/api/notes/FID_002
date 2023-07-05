@@ -1,0 +1,10 @@
+{
+  "data": {
+    "type": "notes",
+    "id": "FID_002",
+    "attributes": {
+      "title": "Second Note (non problematic)",
+      "body": "This is the body of note #2"
+    }
+  }
+}
