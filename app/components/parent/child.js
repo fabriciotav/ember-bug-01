@@ -18,10 +18,20 @@ export default class ParentChildComponent extends Component {
       // Never runs in this example
       state.value = defaultValueForTitle;
     } else if (this.args.noteId) {
-      // This will run multiple times after step 3
-      this.store.findRecord('note', this.args.noteId).then((note) => {
-        state.value = note.get('title');
-      });
+      // Refetching the record with `findRecord` triggers the bug
+      // Doing it with the `peekRecord`/`reload` combo does not
+      const record = this.store.peekRecord('note', this.args.noteId);
+
+      if (record) {
+        record.reload().then((note) => {
+          state.value = note.get('title');
+        });
+      } else {
+        // This now works
+        this.store.findRecord('note', this.args.noteId).then((note) => {
+          state.value = note.get('title');
+        });
+      }
     }
 
     return state;
