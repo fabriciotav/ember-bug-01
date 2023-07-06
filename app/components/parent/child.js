@@ -1,29 +1,42 @@
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
-import { resource, use } from 'ember-resources';
 import { TrackedObject } from 'tracked-built-ins';
 
-export default class ParentChildComponent extends Component {
-  @service
-  store;
+import { use, resourceFactory, resource } from 'ember-resources';
 
-  @use
-  defaultTitle = resource(() => {
-    const state = new TrackedObject({});
+const NameOf = resourceFactory((idFn) => {
+  return resource(({ owner }) => {
+    const state = new TrackedObject({ value: 'defaultTitle' });
+    const store = owner.lookup('service:store');
+    // we delayed using the tracked @noteId
+    // until this invocation
+    const id = idFn();
 
-    // Always falsy for the sake of this example
-    const defaultValueForTitle = '';
+    const refreshNote = async () => {
+      // wait a bit so we don't auto-track peekRecord
+      // or anything else in this function
+      await Promise.resolve();
+      let record = store.peekRecord('note', id);
 
-    if (defaultValueForTitle) {
-      // Never runs in this example
-      state.value = defaultValueForTitle;
-    } else if (this.args.noteId) {
-      // This will run multiple times after step 3
-      this.store.findRecord('note', this.args.noteId).then((note) => {
-        state.value = note.get('title');
-      });
+      if (record) {
+        let note = await record.reload();
+        state.value = note.title;
+        return;
+      }
+      let note = await store.findRecord('note', id);
+      state.value = note.title;
+    };
+
+    // is only called when @noteId changes
+    // because it is the only tracked data we used here
+    if (id) {
+      refreshNote();
     }
 
-    return state;
+    return () => state.value;
   });
+});
+
+export default class ParentChildComponent extends Component {
+  @use title = NameOf(() => this.args.noteId);
 }
